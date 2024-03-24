@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/bookstore")
 public class BookStoreController {
-
+    
     @GetMapping("/healthcheck")
     public String healthCheck(){
         return "UP";

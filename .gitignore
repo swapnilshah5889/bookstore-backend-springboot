@@ -57,10 +57,9 @@ Thumbs.db
 # IDE-specific files
 
 # Application properties file (Spring Boot)
-src/main/resources/application.properties
+*.properties
 
 # Package files
 *.jar
 *.war
 *.ear
-
