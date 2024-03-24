@@ -9,27 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.swapnilshah5889.Bookstore.services.BookService;
 import com.swapnilshah5889.Bookstore.models.BookModel;
 @RestController
-@RequestMapping("/api/v1/bookstore")
-public class BookStoreController {
+@RequestMapping
+public class IndexController {
 
-    private final BookService bookService;
-    
-    @Autowired
-    public BookStoreController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping("/healthcheck")
     public String healthCheck(){
         return "UP";
     }
 
-    @GetMapping("/books") 
-    public ResponseEntity<List<BookModel>> getAllBooks() {
-        List<BookModel> books = bookService.getAllBooks();
-        if(books == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(books, HttpStatus.OK);
-    }
 }
