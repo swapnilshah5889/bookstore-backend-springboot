@@ -24,9 +24,9 @@ create table books (
 INSERT INTO bookstore.authors(`author_name`) 
 VALUES("J.K. Rowling");
 
-INSERT INTO bookstore.categories(`category_name`)
+INSERT INTO booksauthorstore.categories(`category_name`)
 VALUES("Adventure");
 
 INSERT INTO `bookstore`.`books`
 (`book_name`,`author_id`,`category_id`,`isbn`)
-VALUES("Harry Potter and Philoshpher's Stone", 1, 1, 1);
+VALUES("Harry Potter and Goblet of Fire", 1, 1, 1);

@@ -1,42 +1,57 @@
 package com.swapnilshah5889.Bookstore.models;
-
-import java.sql.ResultSet;
-import java.util.List;
-
 public class BookModel {
     int id;
     String bookName;
-    int category_id;
+    CategoryModel category;
     int ISBN;
-    int author_id;
+    AuthorModel author;
 
     public BookModel() {}
 
-    public BookModel(int id, String bookName, int category_id, int iSBN, int author_id) {
+    public BookModel(int id, String bookName, CategoryModel categoryModel, int iSBN, AuthorModel authorModel) {
         this.id = id;
         this.bookName = bookName;
-        this.category_id = category_id;
+        this.category = categoryModel;
         ISBN = iSBN;
-        this.author_id = author_id;
+        this.author = authorModel;
     }
 
     public String getBookName() {
         return bookName;
     }
+
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }
-    public int getCategory_id() {
-        return category_id;
-    }
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
-    }
+
     public int getISBN() {
         return ISBN;
     }
+
     public void setISBN(int iSBN) {
         ISBN = iSBN;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public CategoryModel getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryModel category) {
+        this.category = category;
+    }
+
+    public AuthorModel getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AuthorModel author) {
+        this.author = author;
+    }
+
+    
     
 }

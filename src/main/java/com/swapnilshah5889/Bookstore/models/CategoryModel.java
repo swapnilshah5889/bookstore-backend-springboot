@@ -4,7 +4,7 @@ public class CategoryModel {
     int category_id;
     String categoryName;
 
-    CategoryModel(int category_id, String categoryName) {
+    public CategoryModel(int category_id, String categoryName) {
         this.category_id = category_id;
         this.categoryName = categoryName;
     }

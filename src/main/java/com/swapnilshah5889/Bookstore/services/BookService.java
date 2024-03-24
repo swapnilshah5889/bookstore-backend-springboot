@@ -9,12 +9,8 @@ import com.swapnilshah5889.Bookstore.models.BookModel;
 @Service
 public class BookService {
 
-    private BookDAO bookDAO;
-    
     @Autowired
-    public BookService(BookDAO bookDAO) {
-        this.bookDAO = bookDAO;
-    }
+    private BookDAO bookDAO;
     
     public List<BookModel> getAllBooks() {
         return this.bookDAO.findAllBooks();

@@ -12,11 +12,13 @@ public class BookDAO {
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    
     private final String TABLE_NAME = "books";
-
+    private final String SQL_GET_ALL_BOOKS = "SELECT * FROM "+TABLE_NAME+" AS b "+
+                                            "JOIN categories AS c ON b.category_id = c.category_id "+
+                                            "JOIN authors AS a on b.author_id = a.author_id";
+    
     public List<BookModel> findAllBooks() {
-        String sql = "SELECT * FROM "+TABLE_NAME+";";
-        return jdbcTemplate.query(sql, new BookRowMapper());
+        return jdbcTemplate.query(SQL_GET_ALL_BOOKS, new BookRowMapper());
     }
 }
