@@ -53,4 +53,16 @@ public class CategoryController {
         return new ResponseEntity(category, HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<CategoryModel> updateCategory(
+        @RequestParam("id") int id,
+        @RequestParam("name") String name
+        ) {
+        CategoryModel category = categoryService.updateCategory(id, name);
+        if(category == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(category);
+    }
+
 }

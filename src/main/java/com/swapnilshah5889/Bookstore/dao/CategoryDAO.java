@@ -26,6 +26,7 @@ public class CategoryDAO {
     private final String SQL_GET_ALL_CATEGORIES = "SELECT * FROM "+TABLE_NAME;
     private final String SQL_GET_CATEGORY = "SELECT * FROM "+TABLE_NAME+" WHERE category_id = ?";
     private final String SQL_INSERT_CATEGORY = "INSERT INTO "+TABLE_NAME+"(category_name) VALUES (?)";
+    private final String SQL_UPDATE_CATEGORY = "UPDATE "+TABLE_NAME+" SET category_name = ? WHERE category_id = ?";
     
     // Get all categories
     public List<CategoryModel> getAllCategories() {
@@ -55,6 +56,12 @@ public class CategoryDAO {
             keyHolder
         );
 
-        return new CategoryModel(keyHolder.getKey().intValue(), name);
+        return getCategory(keyHolder.getKey().intValue());
+    }
+
+    // Update category
+    public CategoryModel updateCategory(int id, String name) {
+        jdbcTemplate.update(SQL_UPDATE_CATEGORY, name, id);
+        return new CategoryModel(id, name);
     }
 }

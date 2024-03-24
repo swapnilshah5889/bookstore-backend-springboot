@@ -23,4 +23,8 @@ public class CategoryService {
         return this.categoryDAO.insertCategory(name);
     }
 
+    public CategoryModel updateCategory(int id, String name) {
+        return this.categoryDAO.updateCategory(id, name);
+    }
+
 }
