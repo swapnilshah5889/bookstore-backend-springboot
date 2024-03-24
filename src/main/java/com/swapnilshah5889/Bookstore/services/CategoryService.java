@@ -19,4 +19,8 @@ public class CategoryService {
         return this.categoryDAO.getCategory(id);
     }
 
+    public CategoryModel insertCategory(String name) {
+        return this.categoryDAO.insertCategory(name);
+    }
+
 }
