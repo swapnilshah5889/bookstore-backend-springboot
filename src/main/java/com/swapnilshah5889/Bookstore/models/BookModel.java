@@ -6,6 +6,17 @@ public class BookModel {
     String author;
     int category_id;
     int ISBN;
+    int author_id;
+
+    public BookModel(int id, String bookName, String author, int category_id, int iSBN, int author_id) {
+        this.id = id;
+        this.bookName = bookName;
+        this.author = author;
+        this.category_id = category_id;
+        ISBN = iSBN;
+        this.author_id = author_id;
+    }
+
     public String getBookName() {
         return bookName;
     }
