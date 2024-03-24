@@ -1,17 +1,20 @@
 package com.swapnilshah5889.Bookstore.models;
 
+import java.sql.ResultSet;
+import java.util.List;
+
 public class BookModel {
     int id;
     String bookName;
-    String author;
     int category_id;
     int ISBN;
     int author_id;
 
-    public BookModel(int id, String bookName, String author, int category_id, int iSBN, int author_id) {
+    public BookModel() {}
+
+    public BookModel(int id, String bookName, int category_id, int iSBN, int author_id) {
         this.id = id;
         this.bookName = bookName;
-        this.author = author;
         this.category_id = category_id;
         ISBN = iSBN;
         this.author_id = author_id;
@@ -22,12 +25,6 @@ public class BookModel {
     }
     public void setBookName(String bookName) {
         this.bookName = bookName;
-    }
-    public String getAuthor() {
-        return author;
-    }
-    public void setAuthor(String author) {
-        this.author = author;
     }
     public int getCategory_id() {
         return category_id;
@@ -42,5 +39,4 @@ public class BookModel {
         ISBN = iSBN;
     }
     
-
 }
