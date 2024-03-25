@@ -1,4 +1,4 @@
-package com.swapnilshah5889.Bookstore.models;
+package com.swapnilshah5889.Bookstore.models.object;
 
 public class AuthorModel {
 

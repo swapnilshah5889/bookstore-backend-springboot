@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
-import com.swapnilshah5889.Bookstore.models.AuthorModel;
-import com.swapnilshah5889.Bookstore.models.BookModel;
-import com.swapnilshah5889.Bookstore.models.CategoryModel;
+import com.swapnilshah5889.Bookstore.models.object.AuthorModel;
+import com.swapnilshah5889.Bookstore.models.object.BookModel;
+import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
 
 public class BookRowMapper implements RowMapper<BookModel>{
 
