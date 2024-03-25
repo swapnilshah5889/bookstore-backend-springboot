@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swapnilshah5889.Bookstore.models.CategoryModel;
+import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
+import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
+import com.swapnilshah5889.Bookstore.models.response.DeleteCategoryResponse;
+import com.swapnilshah5889.Bookstore.models.response.ServiceResponse;
 import com.swapnilshah5889.Bookstore.services.CategoryService;
 
 @RestController
@@ -63,6 +66,23 @@ public class CategoryController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(category);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<ApiResponse> deleteCategory(
+        @RequestParam("id") int id
+    ) {
+        ServiceResponse response = categoryService.deleteCategory(id);    
+        
+        if(!response.isSuccess()) {
+            return new ResponseEntity(
+                response.getErrorResponse(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(
+            response.getSuccessResponse(),
+            HttpStatus.OK);
     }
 
 }

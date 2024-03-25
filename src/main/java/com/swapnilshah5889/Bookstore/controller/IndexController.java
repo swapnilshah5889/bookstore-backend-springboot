@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.swapnilshah5889.Bookstore.models.object.BookModel;
 import com.swapnilshah5889.Bookstore.services.BookService;
-import com.swapnilshah5889.Bookstore.models.BookModel;
 @RestController
 @RequestMapping
 public class IndexController {

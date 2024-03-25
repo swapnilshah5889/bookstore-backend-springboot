@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
-import com.swapnilshah5889.Bookstore.models.CategoryModel;
+import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
 
 public class CategoryRowMapper implements RowMapper{
 
