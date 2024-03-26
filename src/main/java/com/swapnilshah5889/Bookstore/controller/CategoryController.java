@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
 import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
-import com.swapnilshah5889.Bookstore.models.response.DeleteCategoryResponse;
-import com.swapnilshah5889.Bookstore.models.response.ServiceResponse;
 import com.swapnilshah5889.Bookstore.services.CategoryService;
 
 @RestController
@@ -72,16 +70,16 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> deleteCategory(
         @RequestParam("id") int id
     ) {
-        ServiceResponse response = categoryService.deleteCategory(id);    
+        ApiResponse response = categoryService.deleteCategory(id);    
         
-        if(!response.isSuccess()) {
+        if(!response.isStatus()) {
             return new ResponseEntity(
-                response.getErrorResponse(),
+                response,
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(
-            response.getSuccessResponse(),
+            response,
             HttpStatus.OK);
     }
 

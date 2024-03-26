@@ -1,24 +1,18 @@
 package com.swapnilshah5889.Bookstore.dao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.amqp.RabbitProperties.Cache.Connection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
 import com.swapnilshah5889.Bookstore.models.response.DeleteCategoryResponse;
-import com.swapnilshah5889.Bookstore.models.response.ServiceResponse;
+import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
 import com.swapnilshah5889.Bookstore.services.BookService;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class CategoryDAO {
@@ -74,19 +68,20 @@ public class CategoryDAO {
     }
 
     // Delete category
-    public ServiceResponse deleteCategory(int categoryId) {
+    public ApiResponse deleteCategory(int categoryId) {
         // Delete all books with this category
         int booksDeleted = bookService.deleteBooksByCategory(categoryId);
         int deletedCategory = jdbcTemplate.update(SQL_DELETE_CATEGORY, categoryId);
-        ServiceResponse response = new ServiceResponse();
+        ApiResponse response = new ApiResponse();
         if(deletedCategory == 0) {
-            response.setSuccess(false);
-            response.setErrorMessage("Category with id " + categoryId + " does not exist");
+            response.setErrorResponse(
+                "Category with id " + categoryId + " does not exist", null);
             return response;
         }
-        response.setSuccess(true);
-        response.setMessage("Category with id " + categoryId + " deleted successfully");
-        response.setResponse(new DeleteCategoryResponse(categoryId, booksDeleted));
+        response.setSuccessResponse(
+            "Category with id " + categoryId + " deleted successfully", 
+            new DeleteCategoryResponse(categoryId, booksDeleted)
+        );
         return response;
     }
 }

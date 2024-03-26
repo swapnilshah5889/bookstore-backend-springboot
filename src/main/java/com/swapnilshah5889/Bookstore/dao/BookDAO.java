@@ -19,6 +19,7 @@ public class BookDAO {
                                             "JOIN authors AS a on b.author_id = a.author_id";
 
     private final String SQL_DELETE_BY_CATEGORY = "DELETE FROM "+TABLE_NAME+" WHERE category_id = ?";
+    private final String SQL_DELETE_BY_AUTHOR = "DELETE FROM "+TABLE_NAME+" WHERE author_id = ?";
     
     // Find all books
     public List<BookModel> findAllBooks() {
@@ -30,4 +31,11 @@ public class BookDAO {
         int deletedRows = jdbcTemplate.update(SQL_DELETE_BY_CATEGORY, category_id);
         return deletedRows;
     }
+
+    // Delete books by author id
+    public int deleteByAuthor(int author_id) {
+        int deletedRows = jdbcTemplate.update(SQL_DELETE_BY_AUTHOR, author_id);
+        return deletedRows;
+    }
+    
 }

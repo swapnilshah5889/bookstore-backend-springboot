@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.swapnilshah5889.Bookstore.dao.CategoryDAO;
 import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
-import com.swapnilshah5889.Bookstore.models.response.DeleteCategoryResponse;
-import com.swapnilshah5889.Bookstore.models.response.ServiceResponse;
+import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
 
 @Service
 public class CategoryService {
@@ -29,7 +28,7 @@ public class CategoryService {
         return this.categoryDAO.updateCategory(id, name);
     }
 
-    public ServiceResponse deleteCategory(int category_id) {
+    public ApiResponse deleteCategory(int category_id) {
         return this.categoryDAO.deleteCategory(category_id);
     }
 
