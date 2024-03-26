@@ -87,6 +87,30 @@ public class BookDAO {
         }
 
     }
+
+    public ApiResponse findBooksByCategoryAndAuthor(Integer category_id, Integer author_id) {
+        // TODO Auto-generated method stub
+        try {
+            String query = SQL_GET_ALL_BOOKS + " WHERE ";
+            if(category_id != null) {
+                query += "c.category_id=" + category_id;
+            }
+            if(author_id != null) {
+                if(category_id != null) 
+                    query += " OR a.author_id=" + author_id;
+                else 
+                    query += " a.author_id=" + author_id;
+            }
+
+            List<BookModel> books = jdbcTemplate.query(query, new BookRowMapper());
+            return new ApiResponse()
+                    .setSuccessResponse("Find books successful", books);
+
+        } catch (Exception e) {
+            return new ApiResponse()
+                    .setErrorResponse("Find books failed", e);
+        }
+    }
     
 
 

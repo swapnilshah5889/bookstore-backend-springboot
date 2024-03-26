@@ -33,4 +33,9 @@ public class BookService {
         return this.bookDAO.findBookById(id);
     }
 
+    // Find books by category id and author id
+    public ApiResponse findBooksByCategoryAndAuthor(Integer category_id, Integer author_id) {
+        return this.bookDAO.findBooksByCategoryAndAuthor(category_id, author_id);
+    }
+
 }

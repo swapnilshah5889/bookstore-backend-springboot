@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swapnilshah5889.Bookstore.models.object.BookModel;
@@ -40,6 +41,27 @@ public class BookController {
         @PathVariable("id") int id
     ) {
         ApiResponse response = bookService.findBookById(id);
+        if(response == null) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if(!response.isStatus()) {
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+        }
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<ApiResponse> getBooksByCategoryAndAuthor(
+        @RequestParam(value="category", required = false) Integer category_id,
+        @RequestParam(value = "author", required = false) Integer author_id
+    ) {
+        if(category_id == null && author_id == null) {
+            return new ResponseEntity(
+                new ApiResponse().setErrorResponse("category or author required", null),
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+        ApiResponse response = bookService.findBooksByCategoryAndAuthor(category_id, author_id);
         if(response == null) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
