@@ -19,24 +19,41 @@ public class ApiResponse {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public ApiResponse setStatus(boolean status) {
         this.status = status;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public ApiResponse setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public Object getResponse() {
         return response;
     }
 
-    public void setResponse(Object response) {
+    public ApiResponse setResponse(Object response) {
         this.response = response;
+        return this;
     }  
+
+    public ApiResponse setSuccessResponse( String message, Object response) {
+        this.setMessage(message);
+        this.setResponse(response);
+        this.setStatus(true);
+        return this;
+    }
+
+    public ApiResponse setErrorResponse( String message, Object response) {
+        this.setMessage(message);
+        this.setResponse(response);
+        this.setStatus(false);
+        return this;
+    }    
     
 }

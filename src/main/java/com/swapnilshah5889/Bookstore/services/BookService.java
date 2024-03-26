@@ -22,4 +22,9 @@ public class BookService {
         return this.bookDAO.deleteByCategory(category_id);
     }
 
+    // Delete books by category
+    public int deleteBooksByAuthor(int author_id) {
+        return this.bookDAO.deleteByAuthor(author_id);
+    }
+
 }
