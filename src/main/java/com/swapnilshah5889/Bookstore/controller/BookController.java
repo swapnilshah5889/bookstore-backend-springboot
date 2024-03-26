@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.swapnilshah5889.Bookstore.models.object.BookModel;
 import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
 import com.swapnilshah5889.Bookstore.services.BookService;
-
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -42,12 +39,12 @@ public class BookController {
     ) {
         ApiResponse response = bookService.findBookById(id);
         if(response == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(!response.isStatus()) {
-            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);    
         }
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/filter")
@@ -56,18 +53,18 @@ public class BookController {
         @RequestParam(value = "author", required = false) Integer author_id
     ) {
         if(category_id == null && author_id == null) {
-            return new ResponseEntity(
+            return new ResponseEntity<>(
                 new ApiResponse().setErrorResponse("category or author required", null),
                 HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
         ApiResponse response = bookService.findBooksByCategoryAndAuthor(category_id, author_id);
         if(response == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(!response.isStatus()) {
-            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);    
         }
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

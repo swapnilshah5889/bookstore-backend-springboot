@@ -80,6 +80,10 @@ public class AuthorDAO {
                 },
                 keyHolder
             );
+            if(keyHolder.getKey() == null) {
+                return new ApiResponse()
+                        .setErrorResponse("Unable to fetch id of the updated author", null);
+            }
             return getAuthor(keyHolder.getKey().intValue())
                     .setMessage("Insert author successful");
             

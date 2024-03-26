@@ -1,5 +1,4 @@
 package com.swapnilshah5889.Bookstore.models.response;
-import jakarta.annotation.Nullable;
 
 public class DeleteCategoryResponse {
 

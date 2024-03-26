@@ -1,6 +1,4 @@
 package com.swapnilshah5889.Bookstore.controller;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +26,12 @@ public class AuthorController {
     public ResponseEntity<ApiResponse> getAllCategories() {
         ApiResponse authors = authorService.getAllAuthors();
         if(authors == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(!authors.isStatus()) {
-            return new ResponseEntity(authors, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(authors, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(authors, HttpStatus.OK);
+        return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
 
@@ -41,25 +39,25 @@ public class AuthorController {
     public ResponseEntity<ApiResponse> getAllCategoryByID(@PathVariable("id") int id) {
         ApiResponse author = authorService.getAuthor(id);
         if(author == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(!author.isStatus()) {
-            return new ResponseEntity(author, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(author, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity(author, HttpStatus.OK);
+        return new ResponseEntity<>(author, HttpStatus.OK);
     }
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCategory(@RequestParam("name") String name) {
         ApiResponse author = authorService.insertAuthor(name);
         if(author == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(!author.isStatus()) {
-            return new ResponseEntity(author, HttpStatus.INTERNAL_SERVER_ERROR);    
+            return new ResponseEntity<>(author, HttpStatus.INTERNAL_SERVER_ERROR);    
         }
-        return new ResponseEntity(author, HttpStatus.OK);
+        return new ResponseEntity<>(author, HttpStatus.OK);
     }
 
     @PostMapping("/update")
@@ -69,10 +67,10 @@ public class AuthorController {
     ) {
         ApiResponse author = authorService.updateAuthor(id, name);
         if(author == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if(!author.isStatus()) {
-            return new ResponseEntity(author, HttpStatus.INTERNAL_SERVER_ERROR);    
+            return new ResponseEntity<>(author, HttpStatus.INTERNAL_SERVER_ERROR);    
         }
         return ResponseEntity.ok(author);
     }
@@ -83,10 +81,10 @@ public class AuthorController {
     ) {
         ApiResponse response = authorService.deleteAuthor(id);    
         if(response == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if(!response.isStatus()) {
-            return new ResponseEntity(
+            return new ResponseEntity<>(
                 response,
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
