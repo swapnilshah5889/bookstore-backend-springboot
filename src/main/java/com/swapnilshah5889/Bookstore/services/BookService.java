@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.swapnilshah5889.Bookstore.dao.BookDAO;
 import com.swapnilshah5889.Bookstore.models.object.BookModel;
+import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
 
 @Service
 public class BookService {
@@ -25,6 +26,11 @@ public class BookService {
     // Delete books by category
     public int deleteBooksByAuthor(int author_id) {
         return this.bookDAO.deleteByAuthor(author_id);
+    }
+
+    // Find book by id
+    public ApiResponse findBookById(int id) {
+        return this.bookDAO.findBookById(id);
     }
 
 }

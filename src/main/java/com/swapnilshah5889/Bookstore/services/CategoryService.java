@@ -1,6 +1,7 @@
 package com.swapnilshah5889.Bookstore.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import com.swapnilshah5889.Bookstore.dao.CategoryDAO;
 import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
@@ -16,11 +17,12 @@ public class CategoryService {
         return this.categoryDAO.getAllCategories();
     }
 
-    public CategoryModel getCategory(int id) {
+    @NonNull
+    public ApiResponse getCategory(int id) {
         return this.categoryDAO.getCategory(id);
     }
 
-    public CategoryModel insertCategory(String name) {
+    public ApiResponse insertCategory(String name) {
         return this.categoryDAO.insertCategory(name);
     }
 

@@ -1,10 +1,13 @@
 package com.swapnilshah5889.Bookstore.dao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import com.swapnilshah5889.Bookstore.models.object.AuthorModel;
 import com.swapnilshah5889.Bookstore.models.object.CategoryModel;
 import com.swapnilshah5889.Bookstore.models.response.DeleteCategoryResponse;
 import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
@@ -36,12 +39,26 @@ public class CategoryDAO {
     }
 
     // Get category by id
-    public CategoryModel getCategory(int id) {
-        return (CategoryModel) jdbcTemplate.queryForObject(SQL_GET_CATEGORY, new CategoryRowMapper(), id);
+    public ApiResponse getCategory(int id) {
+        try {
+        
+            CategoryModel category = null;
+            try {
+                category = (CategoryModel) jdbcTemplate.queryForObject(SQL_GET_CATEGORY, new CategoryRowMapper(), id);
+            } catch (EmptyResultDataAccessException e) {
+                return new ApiResponse()
+                    .setErrorResponse("category does not exist with id: "+id, null);
+            }
+            return new ApiResponse()
+                        .setSuccessResponse("Get category successful", category);
+        } catch (Exception e) {
+            return new ApiResponse()
+                    .setErrorResponse("Get category failed", e);
+        }
     }
 
     // Insert category
-    public CategoryModel insertCategory(String name) {
+    public ApiResponse insertCategory(String name) {
         
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(

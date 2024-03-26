@@ -37,18 +37,18 @@ public class CategoryController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<CategoryModel>> getAllCategoryByID(@PathVariable("id") int id) {
-        CategoryModel category = categoryService.getCategory(id);
-        if(category == null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiResponse> getAllCategoryByID(@PathVariable("id") int id) {
+        ApiResponse category = categoryService.getCategory(id);
+        if(!category.isStatus()) {
+            return new ResponseEntity( category, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(category, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CategoryModel> addCategory(@RequestParam("name") String name) {
-        CategoryModel category = categoryService.insertCategory(name);
-        if(category == null) {
+    public ResponseEntity<ApiResponse> addCategory(@RequestParam("name") String name) {
+        ApiResponse category = categoryService.insertCategory(name);
+        if(category == null || !category.isStatus()) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(category, HttpStatus.OK);
