@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -49,7 +50,13 @@ public class AuthorDAO {
     public ApiResponse getAuthor(int id) {
         try {
         
-            AuthorModel author = (AuthorModel) jdbcTemplate.queryForObject(SQL_GET_AUTHOR, new AuthorRowMapper(), id);
+            AuthorModel author = null;
+            try {
+                author = (AuthorModel) jdbcTemplate.queryForObject(SQL_GET_AUTHOR, new AuthorRowMapper(), id);
+            } catch (EmptyResultDataAccessException e) {
+                return new ApiResponse()
+                    .setErrorResponse("Author does not exist with id: "+id, null);
+            }
             return new ApiResponse()
                         .setSuccessResponse("Get author successful", author);
         } catch (Exception e) {
@@ -73,6 +80,10 @@ public class AuthorDAO {
                 },
                 keyHolder
             );
+            if(keyHolder.getKey() == null) {
+                return new ApiResponse()
+                        .setErrorResponse("Unable to fetch id of the updated author", null);
+            }
             return getAuthor(keyHolder.getKey().intValue())
                     .setMessage("Insert author successful");
             
