@@ -1,7 +1,5 @@
 package com.swapnilshah5889.Bookstore.models.response;
 
-import org.springframework.http.ResponseEntity;
-
 public class ApiResponse {
     boolean status;
     String message;

@@ -38,4 +38,23 @@ public class BookService {
         return this.bookDAO.findBooksByCategoryAndAuthor(category_id, author_id);
     }
 
+    // Insert book
+    public ApiResponse insertBook(String book_name, String author_id, String category_id, int iSBN) {
+        return this.bookDAO.createBook(book_name, author_id, category_id, iSBN);
+    }
+
+    // Udpate book
+    public ApiResponse updateBook(String book_id, String book_name, String author_id, String category_id, String iSBN) { 
+        return this.bookDAO.updateBook(book_id, book_name, category_id, author_id, iSBN);
+    }
+
+    // Delete book by id 
+    public ApiResponse deleteBookById(int book_id) {
+        return this.bookDAO.deleteBook(book_id);
+    }
+
+    // Search book by name, category or author
+    public ApiResponse searchBook(String query) {
+        return this.bookDAO.searchBooks(query);
+    }
 }

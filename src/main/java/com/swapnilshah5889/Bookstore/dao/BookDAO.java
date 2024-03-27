@@ -1,9 +1,15 @@
 package com.swapnilshah5889.Bookstore.dao;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.swapnilshah5889.Bookstore.models.object.BookModel;
@@ -26,7 +32,14 @@ public class BookDAO {
                                             "JOIN categories AS c ON b.category_id = c.category_id "+
                                             "JOIN authors AS a on b.author_id = a.author_id " +
                                             "WHERE b.book_id = ?";
-    
+    private final String SQL_INSERT_BOOK = "INSERT INTO "+TABLE_NAME+" (book_name, author_id, category_id, isbn) "+
+                                            "VALUES (?,?,?,?)";
+    private final String SQL_SEARCH_BOOKS = "SELECT * FROM "+TABLE_NAME+" AS b "+
+                                            "JOIN categories AS c ON b.category_id = c.category_id "+
+                                            "JOIN authors AS a on b.author_id = a.author_id "+
+                                            "WHERE LOWER(b.book_name) LIKE LOWER(?) OR LOWER(a.author_name) LIKE LOWER(?) OR "+
+                                            "LOWER(c.category_name) LIKE LOWER(?)";
+
     // Find all books
     public List<BookModel> findAllBooks() {
         return jdbcTemplate.query(SQL_GET_ALL_BOOKS, new BookRowMapper());
@@ -76,11 +89,11 @@ public class BookDAO {
     
             if(deletedBook == 0) {
                 return new ApiResponse()
-                    .setErrorResponse("Delete book failed", null);
+                    .setErrorResponse("Book with book_id "+book_id+" does not exists", null);
             }
     
             return new ApiResponse()
-                    .setSuccessResponse("Delete book with book_id, "+book_id+" successful", null);            
+                    .setSuccessResponse("Delete book with book_id "+book_id+" successful", null);            
         } catch (Exception e) {
             return new ApiResponse()
                     .setErrorResponse("Delete book failed", e);
@@ -89,7 +102,6 @@ public class BookDAO {
     }
 
     public ApiResponse findBooksByCategoryAndAuthor(Integer category_id, Integer author_id) {
-        // TODO Auto-generated method stub
         try {
             String query = SQL_GET_ALL_BOOKS + " WHERE ";
             if(category_id != null) {
@@ -112,6 +124,86 @@ public class BookDAO {
         }
     }
     
+    public ApiResponse createBook(String bookName, String author_id, String category_id, int iSBN) {
+        try {
 
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(
+                new PreparedStatementCreator() {
 
+                    @Override
+                    public PreparedStatement createPreparedStatement(java.sql.Connection con) throws SQLException {
+                        PreparedStatement ps = con.prepareStatement(SQL_INSERT_BOOK, Statement.RETURN_GENERATED_KEYS);
+                        ps.setString(1, bookName);
+                        ps.setString(2, author_id);
+                        ps.setString(3, category_id);
+                        ps.setInt(4, iSBN);
+                        return ps;
+                    }
+                        
+                },
+                keyHolder
+            );
+
+            return findBookById(keyHolder.getKey().intValue());
+
+        } catch (Exception e) {
+            return new ApiResponse()
+                .setErrorResponse("Create book failed", e);
+        }
+    }
+
+    public ApiResponse updateBook(String book_id, String book_name, String category_id, String author_id, String iSBN) {
+        try {
+
+            String SQL_UPDATE = "UPDATE "+TABLE_NAME+" SET ";
+            if(book_name != null) {
+                SQL_UPDATE += " book_name = '"+ book_name + "' ";
+            }
+            if(category_id != null) {
+                SQL_UPDATE += " category_id = " + category_id +" "; 
+            }
+            if(author_id != null) {
+                SQL_UPDATE += " author_id = "+ author_id + " ";
+            }
+            if(iSBN != null) {
+                SQL_UPDATE += " iSBN = " + iSBN + " ";
+            }
+
+            SQL_UPDATE += " WHERE book_id = "+book_id;
+            final String SQL_UPDATE_QUERY = SQL_UPDATE;
+
+            int updatedRows = jdbcTemplate.update(SQL_UPDATE_QUERY);
+
+            if(updatedRows == 0) {
+                return new ApiResponse()
+                        .setSuccessResponse("Book update failed", null);
+            }
+            return findBookById(Integer.parseInt(book_id));
+            
+        } catch (Exception e) {
+            return new ApiResponse()
+                .setErrorResponse("Create book failed", e);
+        }
+    }
+
+    public ApiResponse searchBooks(String query) {
+        try {
+            query = "%"+query+"%";
+            List<BookModel> books = jdbcTemplate.query(SQL_SEARCH_BOOKS, new BookRowMapper(), query, query, query);
+            if(books == null) {
+                return new ApiResponse()
+                    .setErrorResponse("Book serach failed", null);
+            }
+            if(books.size() == 0) {
+                return new ApiResponse()
+                .setErrorResponse("No books matched for this search query!", null);
+            }
+            return new ApiResponse()
+                .setSuccessResponse("Search book successful", books);
+        } catch (Exception e) {
+            return new ApiResponse()
+                    .setErrorResponse("Find book failed", e);
+        }
+    }
 }
