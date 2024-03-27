@@ -34,6 +34,11 @@ public class BookDAO {
                                             "WHERE b.book_id = ?";
     private final String SQL_INSERT_BOOK = "INSERT INTO "+TABLE_NAME+" (book_name, author_id, category_id, isbn) "+
                                             "VALUES (?,?,?,?)";
+    private final String SQL_SEARCH_BOOKS = "SELECT * FROM "+TABLE_NAME+" AS b "+
+                                            "JOIN categories AS c ON b.category_id = c.category_id "+
+                                            "JOIN authors AS a on b.author_id = a.author_id "+
+                                            "WHERE LOWER(b.book_name) LIKE LOWER(?) OR LOWER(a.author_name) LIKE LOWER(?) OR "+
+                                            "LOWER(c.category_name) LIKE LOWER(?)";
 
     // Find all books
     public List<BookModel> findAllBooks() {
@@ -182,4 +187,23 @@ public class BookDAO {
         }
     }
 
+    public ApiResponse searchBooks(String query) {
+        try {
+            query = "%"+query+"%";
+            List<BookModel> books = jdbcTemplate.query(SQL_SEARCH_BOOKS, new BookRowMapper(), query, query, query);
+            if(books == null) {
+                return new ApiResponse()
+                    .setErrorResponse("Book serach failed", null);
+            }
+            if(books.size() == 0) {
+                return new ApiResponse()
+                .setErrorResponse("No books matched for this search query!", null);
+            }
+            return new ApiResponse()
+                .setSuccessResponse("Search book successful", books);
+        } catch (Exception e) {
+            return new ApiResponse()
+                    .setErrorResponse("Find book failed", e);
+        }
+    }
 }

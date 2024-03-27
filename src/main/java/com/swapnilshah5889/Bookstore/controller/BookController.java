@@ -120,4 +120,17 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> searchBooks(
+        @RequestParam("q") String query
+    ) {
+        ApiResponse response = bookService.searchBook(query);
+        if(response == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else if(!response.isStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+        }
+        return ResponseEntity.ok(response);
+    }
 }

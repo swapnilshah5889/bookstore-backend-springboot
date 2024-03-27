@@ -52,4 +52,9 @@ public class BookService {
     public ApiResponse deleteBookById(int book_id) {
         return this.bookDAO.deleteBook(book_id);
     }
+
+    // Search book by name, category or author
+    public ApiResponse searchBook(String query) {
+        return this.bookDAO.searchBooks(query);
+    }
 }
