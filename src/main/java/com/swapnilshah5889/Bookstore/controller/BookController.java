@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import com.swapnilshah5889.Bookstore.models.object.BookModel;
 import com.swapnilshah5889.Bookstore.models.response.ApiResponse;
 import com.swapnilshah5889.Bookstore.services.BookService;
@@ -99,6 +101,20 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         else if(!response.isStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<ApiResponse> deleteBookById(
+        @RequestParam("bookId") int bookId
+    ) {
+        ApiResponse response = bookService.deleteBookById(bookId);
+        if(response == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else if (!response.isStatus()) {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);    
         }
         return ResponseEntity.ok(response);

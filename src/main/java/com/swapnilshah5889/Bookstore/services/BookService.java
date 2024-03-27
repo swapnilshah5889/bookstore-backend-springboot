@@ -47,4 +47,9 @@ public class BookService {
     public ApiResponse updateBook(String book_id, String book_name, String author_id, String category_id, String iSBN) { 
         return this.bookDAO.updateBook(book_id, book_name, category_id, author_id, iSBN);
     }
+
+    // Delete book by id 
+    public ApiResponse deleteBookById(int book_id) {
+        return this.bookDAO.deleteBook(book_id);
+    }
 }

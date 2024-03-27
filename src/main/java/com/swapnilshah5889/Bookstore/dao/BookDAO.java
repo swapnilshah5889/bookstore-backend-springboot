@@ -84,11 +84,11 @@ public class BookDAO {
     
             if(deletedBook == 0) {
                 return new ApiResponse()
-                    .setErrorResponse("Delete book failed", null);
+                    .setErrorResponse("Book with book_id "+book_id+" does not exists", null);
             }
     
             return new ApiResponse()
-                    .setSuccessResponse("Delete book with book_id, "+book_id+" successful", null);            
+                    .setSuccessResponse("Delete book with book_id "+book_id+" successful", null);            
         } catch (Exception e) {
             return new ApiResponse()
                     .setErrorResponse("Delete book failed", e);
