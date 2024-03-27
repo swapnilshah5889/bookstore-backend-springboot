@@ -86,4 +86,22 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<ApiResponse> updateBook (
+        @RequestParam(value = "bookId", required = true) String book_id,
+        @RequestParam(value = "bookName", required = false) String bookName, 
+        @RequestParam(value = "authorId", required = false) String authorId, 
+        @RequestParam(value = "categoryId", required = false) String categoryId,
+        @RequestParam(value = "iSBN", required = false) String isbn
+    ) {
+        ApiResponse response = bookService.updateBook(book_id, bookName, authorId, categoryId, isbn);
+        if(response == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else if(!response.isStatus()) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);    
+        }
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -34,6 +34,7 @@ public class BookDAO {
                                             "WHERE b.book_id = ?";
     private final String SQL_INSERT_BOOK = "INSERT INTO "+TABLE_NAME+" (book_name, author_id, category_id, isbn) "+
                                             "VALUES (?,?,?,?)";
+
     // Find all books
     public List<BookModel> findAllBooks() {
         return jdbcTemplate.query(SQL_GET_ALL_BOOKS, new BookRowMapper());
@@ -120,7 +121,7 @@ public class BookDAO {
     
     public ApiResponse createBook(String bookName, String author_id, String category_id, int iSBN) {
         try {
-            
+
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(
                 new PreparedStatementCreator() {
@@ -141,6 +142,40 @@ public class BookDAO {
 
             return findBookById(keyHolder.getKey().intValue());
 
+        } catch (Exception e) {
+            return new ApiResponse()
+                .setErrorResponse("Create book failed", e);
+        }
+    }
+
+    public ApiResponse updateBook(String book_id, String book_name, String category_id, String author_id, String iSBN) {
+        try {
+
+            String SQL_UPDATE = "UPDATE "+TABLE_NAME+" SET ";
+            if(book_name != null) {
+                SQL_UPDATE += " book_name = '"+ book_name + "' ";
+            }
+            if(category_id != null) {
+                SQL_UPDATE += " category_id = " + category_id +" "; 
+            }
+            if(author_id != null) {
+                SQL_UPDATE += " author_id = "+ author_id + " ";
+            }
+            if(iSBN != null) {
+                SQL_UPDATE += " iSBN = " + iSBN + " ";
+            }
+
+            SQL_UPDATE += " WHERE book_id = "+book_id;
+            final String SQL_UPDATE_QUERY = SQL_UPDATE;
+
+            int updatedRows = jdbcTemplate.update(SQL_UPDATE_QUERY);
+
+            if(updatedRows == 0) {
+                return new ApiResponse()
+                        .setSuccessResponse("Book update failed", null);
+            }
+            return findBookById(Integer.parseInt(book_id));
+            
         } catch (Exception e) {
             return new ApiResponse()
                 .setErrorResponse("Create book failed", e);

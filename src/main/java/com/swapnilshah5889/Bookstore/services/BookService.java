@@ -42,4 +42,9 @@ public class BookService {
     public ApiResponse insertBook(String book_name, String author_id, String category_id, int iSBN) {
         return this.bookDAO.createBook(book_name, author_id, category_id, iSBN);
     }
+
+    // Udpate book
+    public ApiResponse updateBook(String book_id, String book_name, String author_id, String category_id, String iSBN) { 
+        return this.bookDAO.updateBook(book_id, book_name, category_id, author_id, iSBN);
+    }
 }
