@@ -38,4 +38,8 @@ public class BookService {
         return this.bookDAO.findBooksByCategoryAndAuthor(category_id, author_id);
     }
 
+    // Insert book
+    public ApiResponse insertBook(String book_name, String author_id, String category_id, int iSBN) {
+        return this.bookDAO.createBook(book_name, author_id, category_id, iSBN);
+    }
 }

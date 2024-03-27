@@ -1,9 +1,15 @@
 package com.swapnilshah5889.Bookstore.dao;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.swapnilshah5889.Bookstore.models.object.BookModel;
@@ -26,7 +32,8 @@ public class BookDAO {
                                             "JOIN categories AS c ON b.category_id = c.category_id "+
                                             "JOIN authors AS a on b.author_id = a.author_id " +
                                             "WHERE b.book_id = ?";
-    
+    private final String SQL_INSERT_BOOK = "INSERT INTO "+TABLE_NAME+" (book_name, author_id, category_id, isbn) "+
+                                            "VALUES (?,?,?,?)";
     // Find all books
     public List<BookModel> findAllBooks() {
         return jdbcTemplate.query(SQL_GET_ALL_BOOKS, new BookRowMapper());
@@ -89,7 +96,6 @@ public class BookDAO {
     }
 
     public ApiResponse findBooksByCategoryAndAuthor(Integer category_id, Integer author_id) {
-        // TODO Auto-generated method stub
         try {
             String query = SQL_GET_ALL_BOOKS + " WHERE ";
             if(category_id != null) {
@@ -112,6 +118,33 @@ public class BookDAO {
         }
     }
     
+    public ApiResponse createBook(String bookName, String author_id, String category_id, int iSBN) {
+        try {
+            
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(
+                new PreparedStatementCreator() {
 
+                    @Override
+                    public PreparedStatement createPreparedStatement(java.sql.Connection con) throws SQLException {
+                        PreparedStatement ps = con.prepareStatement(SQL_INSERT_BOOK, Statement.RETURN_GENERATED_KEYS);
+                        ps.setString(1, bookName);
+                        ps.setString(2, author_id);
+                        ps.setString(3, category_id);
+                        ps.setInt(4, iSBN);
+                        return ps;
+                    }
+                        
+                },
+                keyHolder
+            );
+
+            return findBookById(keyHolder.getKey().intValue());
+
+        } catch (Exception e) {
+            return new ApiResponse()
+                .setErrorResponse("Create book failed", e);
+        }
+    }
 
 }
